@@ -1,17 +1,19 @@
 using System.Linq.Expressions;
+using System.Net;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
+using server.Application.Exceptions;
 using server.Application.Helpers;
 using server.Application.Interfaces;
+using server.Application.Mappings;
 using server.Domain.Dto;
 using server.Domain.Dto.Common;
 using server.Domain.Models;
 using server.Domain.Models.Common;
+using server.Persistence;
 using server.Persistence.Interfaces;
-using server.src.Application.Helpers;
-using server.src.Application.Mappings;
-using server.src.Persistence;
 
 namespace server.src.Application.Services;
 
@@ -69,7 +71,7 @@ public class TransactionsService : ITransactionsService
         var includes = new Expression<Func<Transaction, object>>[] { };
         var filters = new Expression<Func<Transaction, bool>>[] { x => x.Id == id};
         var transaction = await _commonRepository.GetResultByIdAsync(_context.Transactions, filters, includes, token) ?? 
-            throw new Exception("Transaction was not found");
+            throw new CustomException("Transaction was not found", (int)HttpStatusCode.NotFound);
 
         // Mapping
         var dto = transaction.TransactionDtoDtoMapping();
@@ -106,8 +108,19 @@ public class TransactionsService : ITransactionsService
         if (existingTransaction == null)
             await _context.Transactions.AddAsync(transaction, token);
         else
+        {
+            // Get currency symbol using regular expression
+            var currencyPattern = new Regex(@"^[^\d]+");
+            var existingCurrency = currencyPattern.Match(existingTransaction.Amount).Value;
+            var transactionCurrency = currencyPattern.Match(transaction.Amount).Value;
+
+            // Check if currencies match
+            if (existingCurrency != transactionCurrency)
+                throw new CustomException("Transaction aborted: The currency of the new transaction does not match the existing transaction currency.", statusCode: 400);
+               
             _context.Entry(existingTransaction).CurrentValues.SetValues(transaction);
-    
+        }
+            
         var result = await _context.SaveChangesAsync(token) > 0;
 
         return new CommandResponse<string>()
@@ -122,7 +135,7 @@ public class TransactionsService : ITransactionsService
         var includes = new Expression<Func<Transaction, object>>[] { };
         var filters = new Expression<Func<Transaction, bool>>[] { x => x.Id == id};
         var transaction = await _commonRepository.GetResultByIdAsync(_context.Transactions, filters, includes, token) ?? 
-            throw new Exception("Transaction was not found");
+            throw new CustomException("Transaction was not found", (int)HttpStatusCode.NotFound);
 
         // Deleting
         _context.Transactions.Remove(transaction);

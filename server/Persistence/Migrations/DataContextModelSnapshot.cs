@@ -3,7 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using server.src.Persistence;
+using server.Persistence;
 
 #nullable disable
 
@@ -16,6 +16,39 @@ namespace Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.16");
+
+            modelBuilder.Entity("server.Domain.Models.Errors.LogError", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Error")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ExceptionType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Instance")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StackTrace")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("StatusCode")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LogErrors");
+                });
 
             modelBuilder.Entity("server.Domain.Models.Transaction", b =>
                 {

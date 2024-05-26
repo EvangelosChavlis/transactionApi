@@ -2,6 +2,7 @@ using FluentValidation;
 using System.Globalization;
 
 using server.Domain.Models;
+using System.Text.RegularExpressions;
 
 namespace server.Application.Validators;
 
@@ -75,6 +76,11 @@ public class TransactionValidator : AbstractValidator<Transaction>
 
     private bool BeAValidAmount(string amount)
     {
-        return decimal.TryParse(amount, NumberStyles.Currency, CultureInfo.InvariantCulture, out _);
+        var currencyPattern = new Regex(@"^[^\d]+");
+        var currency = currencyPattern.Match(amount).Value;
+        Console.WriteLine(currency);
+        
+        if (currency == string.Empty) return false;
+        return true;  
     }
 }

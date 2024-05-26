@@ -1,7 +1,7 @@
+using server.Application.Mappings;
 using server.Domain.Models;
-using server.src.Application.Mappings;
 
-namespace server.src.Application.Helpers;
+namespace server.Application.Helpers;
 public static class CsvExtension
 {
     public static Transaction ParseLine(this string line)

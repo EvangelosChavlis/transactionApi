@@ -16,10 +16,12 @@ public class TransactionsController : ControllerBase
         _transactionsService = transactionsService;
     }
 
+    [ApiExplorerSettings(GroupName = "v1")]
     [HttpGet]
     public async Task<IActionResult> GetTransactions([FromQuery] UrlQuery urlQuery, CancellationToken token)
         => Ok(await _transactionsService.GetTransactionsService(urlQuery, token));
 
+    [ApiExplorerSettings(GroupName = "v1")]
     [HttpGet]
     [Route("{id}")]
     public async Task<IActionResult> GetTransaction(Guid id, CancellationToken token)
@@ -28,19 +30,21 @@ public class TransactionsController : ControllerBase
 
     public class Create
     {
-        public IFormFile File { get; set; }
+        public IFormFile? File { get; set; }
     }
 
+    [ApiExplorerSettings(GroupName = "v1")]
     [HttpPost]
     [Route("upload")]
     public async Task<IActionResult> UploadCsv([FromForm] Create dto, CancellationToken token)
-        => Ok(await _transactionsService.ImportTransactionsService(dto.File, token));
+        => Ok(await _transactionsService.ImportTransactionsService(dto.File!, token));
 
-
+    [ApiExplorerSettings(GroupName = "v1")]
     [HttpPost]
     public async Task<IActionResult> UpsertTransactionTransaction([FromBody] Transaction transaction, CancellationToken token)
         => Ok(await _transactionsService.UpsertTransactionService(transaction, token));
 
+    [ApiExplorerSettings(GroupName = "v1")]
     [HttpDelete]
     [Route("{id}")]
     public async Task<IActionResult> DeleteTransaction(Guid id, CancellationToken token)

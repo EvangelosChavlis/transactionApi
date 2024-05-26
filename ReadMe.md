@@ -43,6 +43,9 @@ Located at `.\transactionsApi\server\Domain`
   - `Common`: Directory for common models.
     - `Envelope.cs`: Model for response envelope.
     - `UrlQuery.cs`: Model for URL query parameters.
+  - `Errors`: Directory for error-related models.
+    - `ErrorDetails.cs`: Model for error details.
+    - `LogError.cs`: Model for log errors.
 
 ### Persistence Layer
 
@@ -51,6 +54,7 @@ Located at `.\transactionsApi\server\Persistence`
 - `Persistence.csproj`: Project file for the Persistence layer.
 - `Configurations`: Directory containing entity configurations.
   - `TransactionConfiguration.cs`: Configuration for the transaction entity.
+  - `LogErrorConfiguration.cs`: Configuration for the log-error entity.
 - `DataContext.cs`: Database context class.
 - `DependencyInjection.cs`: Contains dependency injection configurations for the Persistence layer.
 - `Interfaces`: Directory containing repository interface definitions.
@@ -64,6 +68,8 @@ Located at `.\transactionsApi\server\WebApi`
 
 - `WebApi.csproj`: Project file for the Web API layer.
 - `Controllers`: Directory containing API controllers.
+- `Middlewares`: Directory containing middleware components.
+  - `ExceptionHandlingMiddleware.cs`: Middleware for handling exceptions.
 - `Program.cs`: Entry point for the Web API application.
 - `transaction.db`: The database file used by the application.
 

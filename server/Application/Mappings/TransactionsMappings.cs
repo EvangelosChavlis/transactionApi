@@ -3,7 +3,7 @@ using System.Globalization;
 using server.Domain.Dto;
 using server.Domain.Models;
 
-namespace server.src.Application.Mappings;
+namespace server.Application.Mappings;
 
 public static class TransactionsMappings
 {

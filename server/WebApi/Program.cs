@@ -3,6 +3,8 @@ using server.src.Persistence;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using server.WebApi.Middlewares;
+using server.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +44,8 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
         c.RoutePrefix = "swagger";
     });
 }
+
+app.UseExceptionHandlingMiddleware();
 
 app.UseAuthorization();
 
