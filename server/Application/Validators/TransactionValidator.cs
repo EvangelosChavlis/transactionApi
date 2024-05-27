@@ -1,5 +1,4 @@
 using FluentValidation;
-using System.Globalization;
 
 using server.Domain.Models;
 using System.Text.RegularExpressions;
@@ -78,7 +77,6 @@ public class TransactionValidator : AbstractValidator<Transaction>
     {
         var currencyPattern = new Regex(@"^[^\d]+");
         var currency = currencyPattern.Match(amount).Value;
-        Console.WriteLine(currency);
         
         if (currency == string.Empty) return false;
         return true;  
