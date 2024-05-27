@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "satisfaXion API V1", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "transaction API V1", Version = "v1" });
     c.CustomSchemaIds(type => type.ToString());
 });
 
