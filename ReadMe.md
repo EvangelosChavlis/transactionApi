@@ -83,4 +83,4 @@ To get started with the Transactions API, follow these steps:
 
 3. ```dotnet run --project WebApi```
 
-4. open ```http://localhost:5000/swagger/index.html```
+4. open ```https://localhost:5000/swagger/index.html```
